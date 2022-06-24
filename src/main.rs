@@ -1,4 +1,5 @@
 mod tz;
+mod qalc;
 
 use devzat_rs;
 use tokio::try_join;
@@ -41,7 +42,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
        }
     });
 
-   let _ = try_join!(time_at_cmd);
+   let rpn_cmd = client.register_cmd("rpn", "Perform a computation with a RPN calculator.", "<computation>", |event| async move {
+       qalc::rpn_qalc(&event.args)
+   });
+
+   let _ = try_join!(time_at_cmd, rpn_cmd);
 
     Ok(())
 
