@@ -4,7 +4,7 @@ On [Devzat](https://github.com/quackduck/devzat), people come from all around th
 
 ## In-chat usage
 
-For the people in the chat-room, this plugin exposes a single command, `time_at`. This command takes as argument an IANA timezone.
+For the people in the chat-room, this plugin exposes the command, `time_at`. This command takes as argument an IANA timezone.
 
 Here is an example of in-chat use:
 
@@ -15,6 +15,13 @@ Arkaeriit: time_at Europe/Paris
 Time-teller: At the timezone Europe/Paris, it is 14:29.
 Arkaeriit: time_at NotATimeZone
 Time-teller: Error, NotATimeZone is not a valid time zone.
+```
+
+As a bonus, this plugin also exposes the command `rpn` which perform an  RPN calculation using the program `qalc`.
+
+```
+Arkaeriit: rpn 2 2 +
+2 + 2 = 4
 ```
 
 ## Admin usage
