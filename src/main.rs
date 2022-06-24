@@ -3,30 +3,49 @@ mod tz;
 use devzat_rs;
 use tokio::try_join;
 
-const LOGIN_MSG_ROOM: &str = "#main";
-const LOGIN_MSG_TARGET: &str = "Arkaeriit";
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("{}", tz::time_at_tz("GB").expect("nono"));
+
+    let instance_host = match std::env::var("PLUGIN_HOST") {
+        Ok(host) => host,
+        Err(_) => "https://devzat.hackclub.com:5556".to_string(),
+    };
+
+    let auth_token = match std::env::var("PLUGIN_TOKEN") {
+        Ok(token) => token,
+        Err(_) => panic!("Missing PLUGIN_TOKEN"),
+    };
+
+    let bot_name = match std::env::var("BOT_NAME") {
+        Ok(name) => name,
+        Err(_) => "Time-teller".to_string(),
+    };
+
+    let login_room = match std::env::var("LOGIN_ROOM") {
+        Ok(room) => room,
+        Err(_) => "#bots".to_string(),
+    };
+
+    let dev_nick = match std::env::var("DEV_NICK") {
+        Ok(nick) => nick,
+        Err(_) => "Arkaeriit".to_string(),
+    };
 
     let client = devzat_rs::Client::new(
-        "https://localhost:5556",
-        "dvz@Xsi67V8WLyMQ/uyF5Uk+UmeoCu8sVX9xHH2GZ/D2SwM=", // Token valid on a local instance, no need to try to use it on the main Devzat server.
+        instance_host,
+        auth_token,
     ).await?;
 
-    println!("Hello, world!");
+    login_notify(&client, &bot_name, "Hi!", &login_room, &dev_nick).await;
 
-    login_notify(&client, "Time-teller", "Hi!", LOGIN_MSG_ROOM, LOGIN_MSG_TARGET).await;
-
-   let time_cmd = client.register_cmd("time", "Tell the time at a given timezone.", "<time zone>", |event| async move {
+   let time_at_cmd = client.register_cmd("time_at", "Tell the time at a given timezone.", "<time zone>", |event| async move {
        match tz::time_at_tz(&event.args) {
            Some(time) => format!("At the timezone {}, it is {}.", &event.args, time),
            None => format!("Error, {} is not a valid time zone.", &event.args),
        }
     });
 
-   try_join!(time_cmd);
+   let _ = try_join!(time_at_cmd);
 
     Ok(())
 
