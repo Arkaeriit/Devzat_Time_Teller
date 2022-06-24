@@ -4,6 +4,9 @@ const TZ_PATH: &str = "/usr/share/zoneinfo/";
 
 /// Return true if the timezone given as argument is valid and false otherwise.
 fn is_tz_valid(tz: &str) -> bool {
+    if tz.contains(".") {
+        return false;
+    }
     let tz_path = TZ_PATH.to_owned() + tz;
     let output = Command::new("find")
         .arg(tz_path)
