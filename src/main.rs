@@ -55,11 +55,11 @@ fn get_bot_name() -> String {
     }
 }
 
-/// Try to tell a message to the room login_msg_room. If this fails, try to
+/// Try to tell a message to the room login_msg_room. then, try to
 /// send a message to login_msg_target on #main. If this fails, give up.
 async fn login_notify(client: &devzat_rs::Client ,name: &str, msg: &str, login_msg_room: &str, login_msg_target: &str) {
     match client.send_message( login_msg_room.to_string(), Some(name.to_string()), msg.to_string(), None).await {
-        Ok(()) => {return},
+        Ok(()) => {},
         Err(_) => {},
     }
     match client.send_message( "#main".to_string(), Some(name.to_string()), msg.to_string(), Some(login_msg_target.to_string())).await {
