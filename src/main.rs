@@ -1,7 +1,6 @@
 mod tz;
 
 use devzat_rs;
-
 use tokio::try_join;
 
 const LOGIN_MSG_ROOM: &str = "#main";
@@ -19,6 +18,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Hello, world!");
 
     login_notify(&client, "Time-teller", "Hi!", LOGIN_MSG_ROOM, LOGIN_MSG_TARGET).await;
+
+   let time_cmd = client.register_cmd("time", "Tell the time at a given timezone.", "<time zone>", |event| async move {
+       match tz::time_at_tz(&event.args) {
+           Some(time) => format!("At the timezone {}, it is {}.", &event.args, time),
+           None => format!("Error, {} is not a valid time zone.", &event.args),
+       }
+    });
+
+   try_join!(time_cmd);
 
     Ok(())
 
