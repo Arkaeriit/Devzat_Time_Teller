@@ -18,14 +18,12 @@ fn is_tz_valid(tz: &str) -> bool {
 /// Returns the time at the timezone given in argument.
 /// It is assumed that the given timezone is valid.
 fn time_at_valid_tz(tz: &str) -> String {
-    let mut output = Command::new("date")
+    let output = Command::new("date")
         .arg("+%H:%M")
         .env("TZ", tz)
         .output()
         .expect("date command failed to start")
         .stdout;
-    let last_char = output.len() - 1;
-    output[last_char] = 0; // Remove trailing new line
     std::str::from_utf8(&output).unwrap().to_string() 
 }
 
