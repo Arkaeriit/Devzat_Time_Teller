@@ -16,11 +16,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(_) => panic!("Missing PLUGIN_TOKEN"),
     };
 
-    let bot_name = match std::env::var("BOT_NAME") {
-        Ok(name) => name,
-        Err(_) => "Time-teller".to_string(),
-    };
-
     let login_room = match std::env::var("LOGIN_ROOM") {
         Ok(room) => room,
         Err(_) => "#bots".to_string(),
@@ -36,12 +31,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         auth_token,
     ).await?;
 
-    login_notify(&client, &bot_name, "Hi!", &login_room, &dev_nick).await;
+    login_notify(&client, &get_bot_name(), "Hi! I just logged in.", &login_room, &dev_nick).await;
 
    let time_at_cmd = client.register_cmd("time_at", "Tell the time at a given timezone.", "<time zone>", |event| async move {
+       let name = get_bot_name();
        match tz::time_at_tz(&event.args) {
-           Some(time) => format!("At the timezone {}, it is {}.", &event.args, time),
-           None => format!("Error, {} is not a valid time zone.", &event.args),
+           Some(time) => format!("{}: At the timezone {}, it is {}.", name, &event.args, time),
+           None => format!("{}: Error, {} is not a valid time zone.", name, &event.args),
        }
     });
 
@@ -49,6 +45,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 
+}
+
+/// Get the name of the bot.
+fn get_bot_name() -> String {
+    match std::env::var("BOT_NAME") {
+        Ok(name) => name,
+        Err(_) => "Time-teller".to_string(),
+    }
 }
 
 /// Try to tell a message to the room login_msg_room. If this fails, try to
