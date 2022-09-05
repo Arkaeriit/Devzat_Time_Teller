@@ -24,7 +24,7 @@ fn time_at_valid_tz(tz: &str) -> String {
         .output()
         .expect("date command failed to start")
         .stdout;
-    std::str::from_utf8(&output).unwrap().to_string() 
+    std::str::from_utf8(&output).unwrap().trim().to_string()
 }
 
 /// If the timezone given as argument is valid, returns the time there as a
