@@ -11,7 +11,7 @@ pub fn rpn_qalc(computation: &str) -> String {
         .arg(&replaced)
         .output() {
             Ok(cmd) => std::str::from_utf8(&cmd.stderr).unwrap().to_string() +
-                std::str::from_utf8(&cmd.stdout).unwrap(),
+                &std::str::from_utf8(&cmd.stdout).unwrap().replace("\n", "  \n"),
             Err(_) => "Error, qalc not found on the host system.".to_string(),
     }
 }
