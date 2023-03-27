@@ -3,7 +3,8 @@ use std::process::Command;
 /// From a computation given as input, returns the error and the output of
 /// qalc in RPN mode.
 pub fn rpn_qalc(computation: &str) -> String {
-    let replaced = computation.replace("🥕", "^");
+    let replaced = computation.replace(":carrot:", "🥕");
+    let replaced = replaced.replace("🥕", "^");
     match Command::new("qalc")
         .arg("-set")
         .arg("rpn on")
