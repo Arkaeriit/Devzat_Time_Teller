@@ -408,6 +408,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "73cbba799671b762df5a175adf59ce145165747bb891505c43d09aefbbf38beb"
 
 [[package]]
+name = "math-parse"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f866c1d6a37764fb19b2a5ede4ed10a76a76b47363e958647cade513d25c5fda"
+
+[[package]]
 name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -506,6 +512,7 @@ name = "plugin_devzat_timeteller"
 version = "0.1.0"
 dependencies = [
  "devzat-rs",
+ "math-parse",
  "tokio",
 ]
 

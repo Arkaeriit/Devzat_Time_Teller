@@ -17,7 +17,7 @@ Arkaeriit: time_at NotATimeZone
 Time-teller: Error, NotATimeZone is not a valid time zone.
 ```
 
-As a bonus, this plugin also exposes the command `rpn` which perform an  RPN calculation using the program `qalc`.
+As a bonus, this plugin also exposes the commands `rpn` which perform an RPN calculation and `calc` which performs infix calculation using the library Math-Parse.
 
 ```
 Arkaeriit: rpn 2 2 +

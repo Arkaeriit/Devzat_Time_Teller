@@ -6,3 +6,5 @@ edition = "2021"
 [dependencies]
 devzat-rs = "0.1.0"
 tokio = { version = "1.19", features = ["macros", "rt-multi-thread"] }
+math-parse = "1.0.2"
+

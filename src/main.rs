@@ -43,10 +43,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
    let rpn_cmd = client.register_cmd("rpn", "Perform a computation with a RPN calculator.", "<computation>", |event| async move {
-       qalc::rpn_qalc(&event.args)
+       qalc::rpn_calc(&event.args)
    });
 
-   let _ = try_join!(time_at_cmd, rpn_cmd);
+   let calc_cmd = client.register_cmd("calc", "Perform a computation with an infix calculator.", "<computation>", |event| async move {
+       qalc::infix_calc(&event.args)
+   });
+
+   let _ = try_join!(time_at_cmd, rpn_cmd, calc_cmd);
 
     Ok(())
 
